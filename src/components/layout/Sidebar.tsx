@@ -1,8 +1,8 @@
 
 import React from 'react';
 import { 
-  BarChart, PieChart, BarChart3, Wallet, LineChart, Globe, 
-  DollarSign, Settings, ChevronRight, ChevronLeft, Home
+  Users, Briefcase, GitBranch, Building, Calendar, FileText, BarChart, Settings, 
+  ChevronRight, ChevronLeft, Home
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -31,39 +31,39 @@ export function Sidebar({ isCollapsed, onToggle, className }: SidebarProps) {
       href: '/',
     },
     {
-      title: 'Stocks',
+      title: 'Candidates',
+      icon: Users,
+      href: '/candidates',
+    },
+    {
+      title: 'Jobs',
+      icon: Briefcase,
+      href: '/jobs',
+    },
+    {
+      title: 'ATS Pipeline',
+      icon: GitBranch,
+      href: '/pipeline',
+    },
+    {
+      title: 'Clients',
+      icon: Building,
+      href: '/clients',
+    },
+    {
+      title: 'Interviews',
+      icon: Calendar,
+      href: '/interviews',
+    },
+    {
+      title: 'Reports',
+      icon: FileText,
+      href: '/reports',
+    },
+    {
+      title: 'Analytics',
       icon: BarChart,
-      href: '/stocks',
-    },
-    {
-      title: 'Markets',
-      icon: BarChart3,
-      href: '/markets',
-    },
-    {
-      title: 'Currencies',
-      icon: DollarSign,
-      href: '/currencies',
-    },
-    {
-      title: 'Global',
-      icon: Globe,
-      href: '/global',
-    },
-    {
-      title: 'Portfolio',
-      icon: Wallet,
-      href: '/portfolio',
-    },
-    {
-      title: 'Performance',
-      icon: LineChart,
-      href: '/performance',
-    },
-    {
-      title: 'Analysis',
-      icon: PieChart,
-      href: '/analysis',
+      href: '/analytics',
     },
     {
       title: 'Settings',
@@ -83,7 +83,7 @@ export function Sidebar({ isCollapsed, onToggle, className }: SidebarProps) {
           "font-semibold tracking-tight transition-opacity duration-200",
           isCollapsed ? "opacity-0" : "opacity-100"
         )}>
-          MarketPulse
+          RecruitAI
         </h2>
         
         <Button
@@ -131,9 +131,9 @@ export function Sidebar({ isCollapsed, onToggle, className }: SidebarProps) {
           "transition-opacity duration-200 rounded-md bg-sidebar-accent/50 p-2 text-xs text-sidebar-accent-foreground",
           isCollapsed ? "opacity-0" : "opacity-100"
         )}>
-          <p className="font-medium">Market Status</p>
-          <p>Markets are open</p>
-          <p className="text-[10px]">Closes in 3h 45m</p>
+          <p className="font-medium">Agency Status</p>
+          <p>5 active recruiters</p>
+          <p className="text-[10px]">23 open positions</p>
         </div>
       </div>
     </aside>
