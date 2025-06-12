@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -30,9 +29,11 @@ interface Candidate {
   position: string | null;
   experience: string | null;
   skills: string[] | null;
-  status: 'active' | 'placed' | 'inactive';
+  status: string | null;
   rating: number | null;
   last_contact: string | null;
+  created_at: string | null;
+  created_by: string;
 }
 
 export function CandidateList() {
@@ -176,8 +177,8 @@ export function CandidateList() {
                     <CardDescription>{candidate.position || 'No position specified'}</CardDescription>
                   </div>
                 </div>
-                <Badge className={getStatusColor(candidate.status)}>
-                  {candidate.status}
+                <Badge className={getStatusColor(candidate.status || 'inactive')}>
+                  {candidate.status || 'inactive'}
                 </Badge>
               </div>
             </CardHeader>
