@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,78 +15,65 @@ import {
   Calendar,
   Star
 } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
+import { AddCandidateDialog } from './AddCandidateDialog';
 
 interface Candidate {
   id: string;
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   email: string;
-  phone: string;
-  location: string;
-  position: string;
-  experience: string;
-  skills: string[];
+  phone: string | null;
+  location: string | null;
+  position: string | null;
+  experience: string | null;
+  skills: string[] | null;
   status: 'active' | 'placed' | 'inactive';
-  rating: number;
-  lastContact: string;
+  rating: number | null;
+  last_contact: string | null;
 }
 
 export function CandidateList() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
+  const [candidates, setCandidates] = useState<Candidate[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const { toast } = useToast();
+  const { isRecruiter } = useAuth();
 
-  // Mock data
-  const candidates: Candidate[] = [
-    {
-      id: '1',
-      firstName: 'John',
-      lastName: 'Doe',
-      email: 'john.doe@email.com',
-      phone: '+1 (555) 123-4567',
-      location: 'San Francisco, CA',
-      position: 'Senior React Developer',
-      experience: '5+ years',
-      skills: ['React', 'TypeScript', 'Node.js', 'AWS'],
-      status: 'active',
-      rating: 4.5,
-      lastContact: '2 days ago'
-    },
-    {
-      id: '2',
-      firstName: 'Sarah',
-      lastName: 'Smith',
-      email: 'sarah.smith@email.com',
-      phone: '+1 (555) 987-6543',
-      location: 'New York, NY',
-      position: 'UX Designer',
-      experience: '3+ years',
-      skills: ['Figma', 'Adobe XD', 'User Research', 'Prototyping'],
-      status: 'active',
-      rating: 4.8,
-      lastContact: '1 week ago'
-    },
-    {
-      id: '3',
-      firstName: 'Mike',
-      lastName: 'Johnson',
-      email: 'mike.johnson@email.com',
-      phone: '+1 (555) 456-7890',
-      location: 'Austin, TX',
-      position: 'DevOps Engineer',
-      experience: '7+ years',
-      skills: ['Docker', 'Kubernetes', 'AWS', 'Terraform'],
-      status: 'placed',
-      rating: 4.2,
-      lastContact: '3 weeks ago'
+  useEffect(() => {
+    fetchCandidates();
+  }, []);
+
+  const fetchCandidates = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('candidates')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setCandidates(data || []);
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: "Failed to fetch candidates",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
 
   const filteredCandidates = candidates.filter(candidate => {
     const matchesSearch = 
-      candidate.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      candidate.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      candidate.position.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      candidate.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()));
+      candidate.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      candidate.last_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      candidate.position?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      candidate.skills?.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()));
     
     const matchesStatus = selectedStatus === 'all' || candidate.status === selectedStatus;
     
@@ -106,6 +93,23 @@ export function CandidateList() {
     return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
   };
 
+  const formatLastContact = (lastContact: string | null) => {
+    if (!lastContact) return 'Never';
+    const date = new Date(lastContact);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - date.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 1) return '1 day ago';
+    if (diffDays < 7) return `${diffDays} days ago`;
+    if (diffDays < 30) return `${Math.ceil(diffDays / 7)} weeks ago`;
+    return `${Math.ceil(diffDays / 30)} months ago`;
+  };
+
+  if (loading) {
+    return <div className="text-center py-8">Loading candidates...</div>;
+  }
+
   return (
     <div className="space-y-6">
       {/* Header and Actions */}
@@ -114,10 +118,15 @@ export function CandidateList() {
           <h2 className="text-2xl font-bold">Candidates</h2>
           <p className="text-muted-foreground">Manage your candidate database</p>
         </div>
-        <Button className="flex items-center gap-2">
-          <Plus className="h-4 w-4" />
-          Add Candidate
-        </Button>
+        {isRecruiter && (
+          <Button 
+            className="flex items-center gap-2"
+            onClick={() => setIsAddDialogOpen(true)}
+          >
+            <Plus className="h-4 w-4" />
+            Add Candidate
+          </Button>
+        )}
       </div>
 
       {/* Search and Filters */}
@@ -157,14 +166,14 @@ export function CandidateList() {
                 <div className="flex items-center gap-3">
                   <Avatar>
                     <AvatarFallback className="bg-primary/10 text-primary">
-                      {getInitials(candidate.firstName, candidate.lastName)}
+                      {getInitials(candidate.first_name, candidate.last_name)}
                     </AvatarFallback>
                   </Avatar>
                   <div>
                     <CardTitle className="text-lg">
-                      {candidate.firstName} {candidate.lastName}
+                      {candidate.first_name} {candidate.last_name}
                     </CardTitle>
-                    <CardDescription>{candidate.position}</CardDescription>
+                    <CardDescription>{candidate.position || 'No position specified'}</CardDescription>
                   </div>
                 </div>
                 <Badge className={getStatusColor(candidate.status)}>
@@ -173,37 +182,45 @@ export function CandidateList() {
               </div>
             </CardHeader>
             <CardContent className="space-y-3">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <MapPin className="h-4 w-4" />
-                {candidate.location}
-              </div>
+              {candidate.location && (
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <MapPin className="h-4 w-4" />
+                  {candidate.location}
+                </div>
+              )}
               
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Calendar className="h-4 w-4" />
-                {candidate.experience} experience
-              </div>
+              {candidate.experience && (
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Calendar className="h-4 w-4" />
+                  {candidate.experience} experience
+                </div>
+              )}
 
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                {candidate.rating}/5.0 rating
-              </div>
+              {candidate.rating && (
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                  {candidate.rating}/5.0 rating
+                </div>
+              )}
 
-              <div className="flex flex-wrap gap-1">
-                {candidate.skills.slice(0, 3).map((skill) => (
-                  <Badge key={skill} variant="secondary" className="text-xs">
-                    {skill}
-                  </Badge>
-                ))}
-                {candidate.skills.length > 3 && (
-                  <Badge variant="secondary" className="text-xs">
-                    +{candidate.skills.length - 3} more
-                  </Badge>
-                )}
-              </div>
+              {candidate.skills && candidate.skills.length > 0 && (
+                <div className="flex flex-wrap gap-1">
+                  {candidate.skills.slice(0, 3).map((skill) => (
+                    <Badge key={skill} variant="secondary" className="text-xs">
+                      {skill}
+                    </Badge>
+                  ))}
+                  {candidate.skills.length > 3 && (
+                    <Badge variant="secondary" className="text-xs">
+                      +{candidate.skills.length - 3} more
+                    </Badge>
+                  )}
+                </div>
+              )}
 
               <div className="flex justify-between items-center pt-2">
                 <span className="text-xs text-muted-foreground">
-                  Last contact: {candidate.lastContact}
+                  Last contact: {formatLastContact(candidate.last_contact)}
                 </span>
                 <div className="flex gap-1">
                   <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
@@ -224,6 +241,12 @@ export function CandidateList() {
           <p className="text-muted-foreground">No candidates found matching your criteria.</p>
         </div>
       )}
+
+      <AddCandidateDialog 
+        open={isAddDialogOpen} 
+        onOpenChange={setIsAddDialogOpen}
+        onCandidateAdded={fetchCandidates}
+      />
     </div>
   );
 }

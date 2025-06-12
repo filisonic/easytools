@@ -9,16 +9,174 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      candidates: {
+        Row: {
+          created_at: string | null
+          created_by: string
+          email: string
+          experience: string | null
+          first_name: string
+          id: string
+          last_contact: string | null
+          last_name: string
+          location: string | null
+          phone: string | null
+          position: string | null
+          rating: number | null
+          skills: string[] | null
+          status: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by: string
+          email: string
+          experience?: string | null
+          first_name: string
+          id?: string
+          last_contact?: string | null
+          last_name: string
+          location?: string | null
+          phone?: string | null
+          position?: string | null
+          rating?: number | null
+          skills?: string[] | null
+          status?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string
+          email?: string
+          experience?: string | null
+          first_name?: string
+          id?: string
+          last_contact?: string | null
+          last_name?: string
+          location?: string | null
+          phone?: string | null
+          position?: string | null
+          rating?: number | null
+          skills?: string[] | null
+          status?: string | null
+        }
+        Relationships: []
+      }
+      jobs: {
+        Row: {
+          applicants_count: number | null
+          company: string
+          created_at: string | null
+          created_by: string
+          deadline: string | null
+          description: string | null
+          id: string
+          location: string | null
+          posted_date: string | null
+          requirements: string[] | null
+          salary: string | null
+          status: string | null
+          title: string
+          type: string | null
+        }
+        Insert: {
+          applicants_count?: number | null
+          company: string
+          created_at?: string | null
+          created_by: string
+          deadline?: string | null
+          description?: string | null
+          id?: string
+          location?: string | null
+          posted_date?: string | null
+          requirements?: string[] | null
+          salary?: string | null
+          status?: string | null
+          title: string
+          type?: string | null
+        }
+        Update: {
+          applicants_count?: number | null
+          company?: string
+          created_at?: string | null
+          created_by?: string
+          deadline?: string | null
+          description?: string | null
+          id?: string
+          location?: string | null
+          posted_date?: string | null
+          requirements?: string[] | null
+          salary?: string | null
+          status?: string | null
+          title?: string
+          type?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          email: string
+          first_name: string | null
+          id: string
+          last_name: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          email: string
+          first_name?: string | null
+          id: string
+          last_name?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          email?: string
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _user_id: string
+          _role: Database["public"]["Enums"]["app_role"]
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "recruiter" | "viewer"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -133,6 +291,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "recruiter", "viewer"],
+    },
   },
 } as const
