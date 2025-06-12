@@ -39,31 +39,40 @@ export function UserManagement() {
     setIsLoading(true);
     
     try {
-      // Create user using Supabase Admin API
-      const { data: authData, error: authError } = await supabase.auth.admin.createUser({
-        email: data.email,
-        password: data.password,
-        email_confirm: true,
-        user_metadata: {
-          first_name: data.firstName,
-          last_name: data.lastName,
-          role: data.role,
-          created_by: (await supabase.auth.getUser()).data.user?.id
+      // Get the current session to include auth token
+      const { data: sessionData } = await supabase.auth.getSession();
+      
+      if (!sessionData.session) {
+        throw new Error('No valid session found');
+      }
+
+      // Call the Edge Function to create the user
+      const { data: result, error } = await supabase.functions.invoke('create-user', {
+        body: {
+          email: data.email,
+          password: data.password,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          role: data.role
+        },
+        headers: {
+          Authorization: `Bearer ${sessionData.session.access_token}`
         }
       });
 
-      if (authError) {
-        throw authError;
+      if (error) {
+        throw error;
       }
 
       toast({
         title: "User Created",
-        description: `User ${data.email} has been created successfully.`
+        description: `User ${data.email} has been created successfully with role ${data.role}.`
       });
 
       form.reset();
       setIsOpen(false);
     } catch (error: any) {
+      console.error('Error creating user:', error);
       toast({
         title: "Error",
         description: error.message || "Failed to create user",
@@ -198,6 +207,16 @@ export function UserManagement() {
           </Dialog>
         </div>
       </CardHeader>
+      <CardContent>
+        <div className="text-sm text-muted-foreground">
+          <p>To get started:</p>
+          <ol className="list-decimal list-inside mt-2 space-y-1">
+            <li>Create your first admin user manually in the Supabase dashboard</li>
+            <li>Assign the admin role to that user</li>
+            <li>Log in with that admin account to create additional users</li>
+          </ol>
+        </div>
+      </CardContent>
     </Card>
   );
 }
