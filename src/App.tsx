@@ -17,6 +17,7 @@ import Interviews from "./pages/Interviews";
 import Reports from "./pages/Reports";
 import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings";
+import Apply from "./pages/Apply";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/apply" element={<Apply />} />
             <Route path="/" element={
               <ProtectedRoute>
                 <Index />
