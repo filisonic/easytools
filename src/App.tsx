@@ -30,6 +30,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/login" element={<Login />} />
+            {/* Standalone apply page - no auth required */}
             <Route path="/apply" element={<Apply />} />
             <Route path="/" element={
               <ProtectedRoute>
