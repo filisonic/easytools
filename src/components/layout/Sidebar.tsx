@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { 
   Users, Briefcase, GitBranch, Building, Calendar, FileText, BarChart, Settings, 
-  ChevronRight, ChevronLeft, Home
+  ChevronRight, ChevronLeft, Home, UserPlus
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -39,6 +38,11 @@ export function Sidebar({ isCollapsed, onToggle, className }: SidebarProps) {
       title: 'Jobs',
       icon: Briefcase,
       href: '/jobs',
+    },
+    {
+      title: 'Apply',
+      icon: UserPlus,
+      href: '/apply',
     },
     {
       title: 'ATS Pipeline',
