@@ -7,6 +7,7 @@ import * as z from 'zod';
 import { toast } from '@/hooks/use-toast';
 import axios from 'axios';
 import { ApplicationTabs } from './ApplicationTabs';
+import { supabase } from '@/integrations/supabase/client';
 
 const formSchema = z.object({
   firstName: z.string().min(2, 'First name must be at least 2 characters'),
@@ -49,34 +50,66 @@ export function JobApplicationForm() {
       return;
     }
 
-    if (!webhookUrl) {
-      toast({
-        title: 'Webhook URL Required',
-        description: 'Please enter your n8n webhook URL.',
-        variant: 'destructive',
-      });
-      return;
-    }
-
     setIsSubmitting(true);
 
     try {
-      const formData = new FormData();
-      formData.append('First Name', data.firstName);
-      formData.append('Last Name', data.lastName);
-      formData.append('Email', data.email);
-      formData.append('Phone', data.phone);
-      formData.append('Years of experience', data.yearsOfExperience);
-      if (data.coverLetter) {
-        formData.append('Cover Letter', data.coverLetter);
-      }
-      formData.append('Upload_your_CV', cvFile);
-      formData.append('application_type', 'standard_application');
+      // 1. Upload resume to Supabase Storage
+      let resumeUrl = null;
+      if (cvFile) {
+        const fileExt = cvFile.name.split('.').pop();
+        const fileName = `resumes/${Date.now()}-${(data.firstName + '-' + data.lastName).replace(/\s+/g, '-')}.${fileExt}`;
+        
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('resumes')
+          .upload(fileName, cvFile);
 
-      const response = await axios.post(webhookUrl, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-        timeout: 30000, // 30 second timeout
-      });
+        if (uploadError) throw uploadError;
+        
+        // Get public URL
+        const { data: { publicUrl } } = supabase.storage
+          .from('resumes')
+          .getPublicUrl(fileName);
+        
+        resumeUrl = publicUrl;
+      }
+
+      // 2. Save candidate to Supabase
+      const candidateData = {
+        first_name: data.firstName,
+        last_name: data.lastName,
+        email: data.email,
+        phone: data.phone,
+        experience: data.yearsOfExperience,
+        resume_url: resumeUrl,
+        status: 'New Application',
+        created_by: '00000000-0000-0000-0000-000000000000' // Default system user for public applications
+      };
+
+      const { data: candidate, error: dbError } = await supabase
+        .from('candidates')
+        .insert([candidateData])
+        .select()
+        .single();
+
+      if (dbError) throw dbError;
+
+      // 3. Trigger n8n workflow if webhook URL is provided
+      if (webhookUrl) {
+        try {
+          await fetch(webhookUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              record: candidate,
+              source: 'Lovable Application Form'
+            })
+          });
+        } catch (webhookError) {
+          console.warn('n8n webhook failed, but application was saved:', webhookError);
+        }
+      }
 
       toast({
         title: 'Application Submitted!',
@@ -85,7 +118,7 @@ export function JobApplicationForm() {
 
       setApplicationSubmitted(true);
       setActiveTab('interview');
-      console.log('Application submitted successfully:', response.data);
+      console.log('Application submitted successfully:', candidate);
 
     } catch (error) {
       console.error('Error submitting application:', error);

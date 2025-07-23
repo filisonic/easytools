@@ -69,19 +69,18 @@ export function BasicApplicationForm({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        {/* Webhook URL Input */}
+        {/* Webhook URL Input (Optional) */}
         <div className="space-y-2">
-          <Label htmlFor="webhook">n8n Webhook URL</Label>
+          <Label htmlFor="webhook">n8n Webhook URL (Optional)</Label>
           <Input
             id="webhook"
             type="url"
             placeholder="https://your-n8n-instance/webhook/automation-specialist-application"
             value={webhookUrl}
             onChange={(e) => setWebhookUrl(e.target.value)}
-            required
           />
           <p className="text-sm text-muted-foreground">
-            Enter your n8n webhook URL to process the application
+            Enter your n8n webhook URL for additional processing (optional - applications are saved to database)
           </p>
         </div>
 
