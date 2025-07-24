@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import JobsList from '../components/jobs/JobsList';
-import CreateJobForm from '../components/Jobs/CreateJobForm';
+import CreateJobForm from '../components/jobs/CreateJobForm';
 
 const JobsPage: React.FC = () => {
   const [showCreateForm, setShowCreateForm] = useState(false);
