@@ -18,36 +18,14 @@ const Interviews = () => {
   const interviews = [
     {
       id: '1',
-      candidate: 'Alice Johnson',
-      position: 'Frontend Developer',
-      client: 'TechCorp Inc.',
-      date: '2024-01-20',
-      time: '10:00 AM',
+      candidate: 'Candidate Name',
+      position: 'Position Title',
+      client: 'Client Name',
+      date: '2024-01-01',
+      time: '09:00 AM',
       type: 'video',
       status: 'scheduled',
-      interviewer: 'Sarah Smith'
-    },
-    {
-      id: '2',
-      candidate: 'Bob Wilson',
-      position: 'Data Scientist',
-      client: 'StartupXYZ',
-      date: '2024-01-20',
-      time: '2:30 PM',
-      type: 'phone',
-      status: 'scheduled',
-      interviewer: 'Mike Davis'
-    },
-    {
-      id: '3',
-      candidate: 'Carol Davis',
-      position: 'Product Manager',
-      client: 'CloudTech Solutions',
-      date: '2024-01-21',
-      time: '4:00 PM',
-      type: 'in-person',
-      status: 'confirmed',
-      interviewer: 'Lisa Johnson'
+      interviewer: 'Interviewer Name'
     }
   ];
 

@@ -16,38 +16,17 @@ const Reports = () => {
   const reports = [
     {
       id: '1',
-      name: 'Monthly Placement Report',
-      description: 'Summary of all placements for the current month',
-      lastGenerated: '2024-01-15',
-      type: 'placement'
-    },
-    {
-      id: '2',
-      name: 'Candidate Pipeline Analysis',
-      description: 'Analysis of candidate flow through the hiring pipeline',
-      lastGenerated: '2024-01-14',
-      type: 'pipeline'
-    },
-    {
-      id: '3',
-      name: 'Client Performance Summary',
-      description: 'Performance metrics for all active clients',
-      lastGenerated: '2024-01-13',
-      type: 'client'
-    },
-    {
-      id: '4',
-      name: 'Revenue & Commission Report',
-      description: 'Financial summary including revenue and commissions',
-      lastGenerated: '2024-01-12',
-      type: 'financial'
+      name: 'Report Name',
+      description: 'Report description goes here.',
+      lastGenerated: '2024-01-01',
+      type: 'generic'
     }
   ];
 
   const quickStats = [
-    { title: 'Total Reports Generated', value: '127', icon: FileText },
-    { title: 'This Month', value: '23', icon: Calendar },
-    { title: 'Average Time to Generate', value: '2.3s', icon: TrendingUp }
+    { title: 'Total Reports Generated', value: '0', icon: FileText },
+    { title: 'This Month', value: '0', icon: Calendar },
+    { title: 'Average Time to Generate', value: '0s', icon: TrendingUp }
   ];
 
   return (

@@ -9,56 +9,32 @@ import { Bitcoin, TrendingUp, TrendingDown } from 'lucide-react';
 const Analysis = () => {
   // Mock data for sector performance
   const sectorPerformance = [
-    { name: 'Technology', value: 8.2 },
-    { name: 'Healthcare', value: 3.5 },
-    { name: 'Financials', value: -1.2 },
-    { name: 'Consumer', value: 2.8 },
-    { name: 'Energy', value: -2.5 },
-    { name: 'Materials', value: 0.9 },
-    { name: 'Utilities', value: -0.7 },
+    { name: 'Sector', value: 0 }
   ];
   
   // Mock data for risk assessment
   const riskData = [
-    { name: 'Volatility', value: 65 },
-    { name: 'Correlation', value: 42 },
-    { name: 'Downside Risk', value: 38 },
-    { name: 'Sharpe Ratio', value: 78 },
-    { name: 'Liquidity', value: 85 },
+    { name: 'Risk Metric', value: 0 }
   ];
   
   // Mock data for portfolio distribution
   const distributionData = [
-    { name: 'Large Cap', value: 55 },
-    { name: 'Mid Cap', value: 30 },
-    { name: 'Small Cap', value: 15 },
+    { name: 'Category', value: 100 }
   ];
   
   // Format stock data for the heatmap (treemap)
-  const stockGrowthData = mockStocks
-    .map(stock => ({
-      name: stock.symbol,
-      value: Math.abs(stock.changePercent),
-      changePercent: stock.changePercent
-    }))
-    .sort((a, b) => b.changePercent - a.changePercent);
+  const stockGrowthData = [
+    { name: 'TICK', value: 0, changePercent: 0 }
+  ];
   
   // Format cryptocurrency data for analysis
-  const cryptoData = mockCryptos
-    .map(crypto => ({
-      name: crypto.name,
-      symbol: crypto.symbol,
-      value: crypto.marketCap,
-      price: crypto.price,
-      change: crypto.changePercent,
-      marketCap: crypto.marketCap,
-      volume: crypto.volume
-    }))
-    .sort((a, b) => b.value - a.value);
+  const cryptoData = [
+    { name: 'Crypto', symbol: 'CRYP', value: 0, price: 0, change: 0, marketCap: 0, volume: 0 }
+  ];
   
   // Generate price history for Bitcoin and Ethereum
-  const [btcHistory, setBtcHistory] = useState(generatePriceHistory(30, 62000, 5));
-  const [ethHistory, setEthHistory] = useState(generatePriceHistory(30, 3200, 6));
+  const [btcHistory, setBtcHistory] = useState([0]);
+  const [ethHistory, setEthHistory] = useState([0]);
   
   // Format historical data for charts
   const btcHistoryData = btcHistory.map((price, index) => ({

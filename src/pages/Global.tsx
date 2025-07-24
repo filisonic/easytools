@@ -8,9 +8,7 @@ const Global = () => {
   const indices = useMarketIndices(mockIndices);
   
   const regions = [
-    { name: 'North America', markets: ['United States', 'Canada'] },
-    { name: 'Europe', markets: ['United Kingdom', 'Germany', 'France', 'Switzerland'] },
-    { name: 'Asia-Pacific', markets: ['Japan', 'China', 'Hong Kong', 'Australia'] },
+    { name: 'Region', markets: ['Market'] }
   ];
   
   return (
@@ -62,27 +60,11 @@ const Global = () => {
               </thead>
               <tbody>
                 <tr className="border-b">
-                  <td className="py-2 px-4">08:30 AM</td>
-                  <td className="py-2 px-4">United States</td>
-                  <td className="py-2 px-4">Non-Farm Payrolls</td>
+                  <td className="py-2 px-4">00:00 AM</td>
+                  <td className="py-2 px-4">Region</td>
+                  <td className="py-2 px-4">Event Name</td>
                   <td className="py-2 px-4">
-                    <span className="bg-red-100 text-red-800 px-2 py-1 rounded text-xs">High</span>
-                  </td>
-                </tr>
-                <tr className="border-b">
-                  <td className="py-2 px-4">10:00 AM</td>
-                  <td className="py-2 px-4">Eurozone</td>
-                  <td className="py-2 px-4">ECB Interest Rate Decision</td>
-                  <td className="py-2 px-4">
-                    <span className="bg-red-100 text-red-800 px-2 py-1 rounded text-xs">High</span>
-                  </td>
-                </tr>
-                <tr className="border-b">
-                  <td className="py-2 px-4">02:00 PM</td>
-                  <td className="py-2 px-4">United Kingdom</td>
-                  <td className="py-2 px-4">GDP (QoQ)</td>
-                  <td className="py-2 px-4">
-                    <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs">Medium</span>
+                    <span className="bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs">Low</span>
                   </td>
                 </tr>
               </tbody>

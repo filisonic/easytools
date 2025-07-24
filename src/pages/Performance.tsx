@@ -6,38 +6,9 @@ import { generatePriceHistory } from '@/utils/stocksApi';
 
 const Performance = () => {
   // Generate mock performance data
-  const generatePerformanceData = () => {
-    const baseValue = 10000;
-    const volatility = 1.5;
-    const days = 30;
-    const portfolioValues = [baseValue];
-    const marketValues = [baseValue];
-    
-    const dates = Array.from({ length: days }, (_, i) => {
-      const date = new Date();
-      date.setDate(date.getDate() - (days - i - 1));
-      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-    });
-    
-    for (let i = 1; i < days; i++) {
-      const portfolioChange = (Math.random() - 0.45) * volatility;
-      const marketChange = (Math.random() - 0.5) * (volatility * 0.8);
-      
-      portfolioValues.push(
-        parseFloat((portfolioValues[i-1] * (1 + portfolioChange / 100)).toFixed(2))
-      );
-      
-      marketValues.push(
-        parseFloat((marketValues[i-1] * (1 + marketChange / 100)).toFixed(2))
-      );
-    }
-    
-    return dates.map((date, i) => ({
-      date,
-      portfolio: portfolioValues[i],
-      market: marketValues[i]
-    }));
-  };
+  const generatePerformanceData = () => [
+    { date: 'Jan 1', portfolio: 0, market: 0 }
+  ];
   
   const performanceData = generatePerformanceData();
   
@@ -48,12 +19,7 @@ const Performance = () => {
   
   // Mock sector allocation data
   const sectorAllocation = [
-    { name: 'Technology', value: 45 },
-    { name: 'Healthcare', value: 20 },
-    { name: 'Financials', value: 15 },
-    { name: 'Consumer', value: 10 },
-    { name: 'Energy', value: 5 },
-    { name: 'Other', value: 5 }
+    { name: 'Sector', value: 100 }
   ];
   
   return (

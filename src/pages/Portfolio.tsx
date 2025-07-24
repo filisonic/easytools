@@ -9,10 +9,7 @@ const Portfolio = () => {
   
   // Mock portfolio data
   const portfolio = [
-    { symbol: 'AAPL', shares: 15, costBasis: 150.75 },
-    { symbol: 'MSFT', shares: 8, costBasis: 380.25 },
-    { symbol: 'NVDA', shares: 5, costBasis: 820.50 },
-    { symbol: 'GOOGL', shares: 10, costBasis: 145.30 },
+    { symbol: 'TICK', shares: 0, costBasis: 0 }
   ];
   
   // Calculate portfolio values

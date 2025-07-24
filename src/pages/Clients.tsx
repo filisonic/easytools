@@ -20,36 +20,14 @@ const Clients = () => {
   const clients = [
     {
       id: '1',
-      company: 'TechCorp Inc.',
-      contact: 'John Smith',
-      email: 'john@techcorp.com',
-      phone: '+1 (555) 123-4567',
-      location: 'San Francisco, CA',
-      activeJobs: 3,
-      totalPlacements: 12,
-      status: 'active'
-    },
-    {
-      id: '2',
-      company: 'StartupXYZ',
-      contact: 'Sarah Johnson',
-      email: 'sarah@startupxyz.com',
-      phone: '+1 (555) 987-6543',
-      location: 'Austin, TX',
-      activeJobs: 1,
-      totalPlacements: 5,
-      status: 'active'
-    },
-    {
-      id: '3',
-      company: 'CloudTech Solutions',
-      contact: 'Mike Davis',
-      email: 'mike@cloudtech.com',
-      phone: '+1 (555) 456-7890',
-      location: 'Seattle, WA',
+      company: 'Client Name',
+      contact: 'Contact Name',
+      email: 'client@email.com',
+      phone: 'N/A',
+      location: 'N/A',
       activeJobs: 0,
-      totalPlacements: 8,
-      status: 'inactive'
+      totalPlacements: 0,
+      status: 'active'
     }
   ];
 

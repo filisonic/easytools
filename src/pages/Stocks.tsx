@@ -6,7 +6,18 @@ import { StockCard } from '@/components/stocks/StockCard';
 import { StockChart } from '@/components/stocks/StockChart';
 
 const Stocks = () => {
-  const stocks = useStockData(mockStocks);
+  const stocks = [
+    {
+      symbol: 'TICK',
+      name: 'Stock Name',
+      price: 0,
+      change: 0,
+      changePercent: 0,
+      volume: 0,
+      marketCap: 0,
+      lastUpdated: new Date()
+    }
+  ];
   const [selectedStock, setSelectedStock] = React.useState(stocks[0]);
   
   const stocksWithHistory = stocks.map(stock => {
