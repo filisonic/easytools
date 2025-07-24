@@ -80,6 +80,7 @@ export function JobApplicationForm() {
         email: data.email,
         phone: data.phone,
         experience: data.yearsOfExperience,
+        cover_letter: data.coverLetter,
         resume_url: resumeUrl,
         status: 'New Application',
         created_by: '00000000-0000-0000-0000-000000000000' // Default system user for public applications
