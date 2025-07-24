@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import JobsList from '../components/Jobs/JobsList';
+import JobsList from '../components/jobs/JobsList';
 import CreateJobForm from '../components/Jobs/CreateJobForm';
 
 const JobsPage: React.FC = () => {
