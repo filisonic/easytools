@@ -25,8 +25,6 @@ interface ApplicationTabsProps {
   applicationSubmitted: boolean;
   form: UseFormReturn<FormData>;
   onSubmit: (data: FormData) => Promise<void>;
-  webhookUrl: string;
-  setWebhookUrl: (url: string) => void;
   cvFile: File | null;
   setCvFile: (file: File | null) => void;
   isSubmitting: boolean;
@@ -39,8 +37,6 @@ export function ApplicationTabs({
   applicationSubmitted,
   form,
   onSubmit,
-  webhookUrl,
-  setWebhookUrl,
   cvFile,
   setCvFile,
   isSubmitting,
@@ -67,8 +63,6 @@ export function ApplicationTabs({
         <BasicApplicationForm
           form={form}
           onSubmit={onSubmit}
-          webhookUrl={webhookUrl}
-          setWebhookUrl={setWebhookUrl}
           cvFile={cvFile}
           setCvFile={setCvFile}
           isSubmitting={isSubmitting}
@@ -80,7 +74,7 @@ export function ApplicationTabs({
         {applicationSubmitted ? (
           <VideoInterviewRecorder 
             onVideoRecorded={onVideoRecorded}
-            webhookUrl={webhookUrl}
+            webhookUrl=""
           />
         ) : (
           <Card className="p-8 text-center">

@@ -25,8 +25,6 @@ type FormData = z.infer<typeof formSchema>;
 interface BasicApplicationFormProps {
   form: UseFormReturn<FormData>;
   onSubmit: (data: FormData) => Promise<void>;
-  webhookUrl: string;
-  setWebhookUrl: (url: string) => void;
   cvFile: File | null;
   setCvFile: (file: File | null) => void;
   isSubmitting: boolean;
@@ -36,8 +34,6 @@ interface BasicApplicationFormProps {
 export function BasicApplicationForm({
   form,
   onSubmit,
-  webhookUrl,
-  setWebhookUrl,
   cvFile,
   setCvFile,
   isSubmitting,
@@ -69,21 +65,6 @@ export function BasicApplicationForm({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        {/* Webhook URL Input (Optional) */}
-        <div className="space-y-2">
-          <Label htmlFor="webhook">n8n Webhook URL (Optional)</Label>
-          <Input
-            id="webhook"
-            type="url"
-            placeholder="https://your-n8n-instance/webhook/automation-specialist-application"
-            value={webhookUrl}
-            onChange={(e) => setWebhookUrl(e.target.value)}
-          />
-          <p className="text-sm text-muted-foreground">
-            Enter your n8n webhook URL for additional processing (optional - applications are saved to database)
-          </p>
-        </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <FormField
             control={form.control}

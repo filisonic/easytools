@@ -23,8 +23,10 @@ type FormData = z.infer<typeof formSchema>;
 export function JobApplicationForm() {
   const [cvFile, setCvFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [webhookUrl, setWebhookUrl] = useState('');
   const [applicationSubmitted, setApplicationSubmitted] = useState(false);
+  
+  // Hardcoded n8n webhook URL
+  const webhookUrl = 'https://n8n-railway-production-369c.up.railway.app/webhook/easyhrtools-application';
   const [videoBlobs, setVideoBlobs] = useState<Blob[]>([]);
   const [activeTab, setActiveTab] = useState('application');
 
@@ -94,27 +96,31 @@ export function JobApplicationForm() {
 
       if (dbError) throw dbError;
 
-      // 3. Trigger n8n workflow if webhook URL is provided
-      if (webhookUrl) {
-        try {
-          await fetch(webhookUrl, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              record: candidate,
-              source: 'Lovable Application Form'
-            })
-          });
-        } catch (webhookError) {
-          console.warn('n8n webhook failed, but application was saved:', webhookError);
-        }
+      // 3. Trigger n8n workflow
+      try {
+        await fetch(webhookUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            record: candidate,
+            source: 'Lovable Application Form'
+          })
+        });
+        console.log('n8n workflow triggered successfully');
+      } catch (webhookError) {
+        console.warn('n8n webhook failed, but application was saved:', webhookError);
+        toast({
+          title: 'Workflow Notification',
+          description: 'Application saved successfully. Automated workflow had an issue but this won\'t affect your application.',
+          variant: 'default',
+        });
       }
 
       toast({
         title: 'Application Submitted!',
-        description: 'Your job application has been submitted successfully. You can now proceed to the video interview section.',
+        description: 'Your application has been submitted and sent to our HR system. You can now proceed to the video interview section.',
       });
 
       setApplicationSubmitted(true);
@@ -153,8 +159,6 @@ export function JobApplicationForm() {
             applicationSubmitted={applicationSubmitted}
             form={form}
             onSubmit={onSubmit}
-            webhookUrl={webhookUrl}
-            setWebhookUrl={setWebhookUrl}
             cvFile={cvFile}
             setCvFile={setCvFile}
             isSubmitting={isSubmitting}
