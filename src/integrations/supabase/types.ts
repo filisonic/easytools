@@ -16,6 +16,8 @@ export type Database = {
     Tables: {
       candidates: {
         Row: {
+          ai_analysis: Json | null
+          cover_letter: string | null
           created_at: string | null
           created_by: string
           email: string
@@ -25,14 +27,18 @@ export type Database = {
           last_contact: string | null
           last_name: string
           location: string | null
+          match_score: number | null
           phone: string | null
           position: string | null
           rating: number | null
           resume_url: string | null
           skills: string[] | null
           status: string | null
+          updated_at: string | null
         }
         Insert: {
+          ai_analysis?: Json | null
+          cover_letter?: string | null
           created_at?: string | null
           created_by: string
           email: string
@@ -42,14 +48,18 @@ export type Database = {
           last_contact?: string | null
           last_name: string
           location?: string | null
+          match_score?: number | null
           phone?: string | null
           position?: string | null
           rating?: number | null
           resume_url?: string | null
           skills?: string[] | null
           status?: string | null
+          updated_at?: string | null
         }
         Update: {
+          ai_analysis?: Json | null
+          cover_letter?: string | null
           created_at?: string | null
           created_by?: string
           email?: string
@@ -59,12 +69,14 @@ export type Database = {
           last_contact?: string | null
           last_name?: string
           location?: string | null
+          match_score?: number | null
           phone?: string | null
           position?: string | null
           rating?: number | null
           resume_url?: string | null
           skills?: string[] | null
           status?: string | null
+          updated_at?: string | null
         }
         Relationships: []
       }
