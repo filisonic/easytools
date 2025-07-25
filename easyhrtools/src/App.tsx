@@ -10,7 +10,7 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import Candidates from "./pages/Candidates";
-import Jobs from "./pages/Jobs";
+import Jobs from "./pages/jobs";
 import Pipeline from "./pages/Pipeline";
 import Clients from "./pages/Clients";
 import Interviews from "./pages/Interviews";
