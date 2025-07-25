@@ -1,0 +1,7 @@
+﻿[build]
+  base = "easyhrtools"
+  command = "npm run build"
+  publish = "easyhrtools/dist"
+
+[build.environment]
+  NODE_VERSION = "18"
