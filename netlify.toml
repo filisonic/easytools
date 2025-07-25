@@ -1,4 +1,4 @@
-﻿[build]
+[build]
   base = "easyhrtools"
   command = "npm run build"
   publish = "easyhrtools/dist"
